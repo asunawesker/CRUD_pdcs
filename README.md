@@ -2,7 +2,7 @@
 
 *PE:* **Ingeniería de software**
 
-*EE:* **Principios de diseño de software**
+*EE:* **Principios de construcción de software**
 
 *Alumna:* **Iraís Aguirre Valente**
 
