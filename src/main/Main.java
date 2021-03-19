@@ -20,8 +20,8 @@ public class Main {
      */
     public static void main(String[] args) throws SQLException {
         
-        StudentView view = new StudentView();
-        view.setVisible(true);         
+        //StudentView view = new StudentView();
+        //view.setVisible(true);         
         
     }
     

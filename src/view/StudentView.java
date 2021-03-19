@@ -5,12 +5,12 @@
  */
 package view;
 
-import dao.StudentDaoImplementation;
+import dao.DaoStudent;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Student;
+import pojo.PojoStudent;
 
 /**
  *
@@ -18,13 +18,13 @@ import model.Student;
  */
 public class StudentView extends javax.swing.JFrame {
 
-    Student student;
-    StudentDaoImplementation studentDao;
-    List<Student> ls;
+    PojoStudent student;
+    DaoStudent studentDao;
+    List<PojoStudent> ls;
     
     public StudentView() throws SQLException {
-        this.student = new Student();
-        this.studentDao = new StudentDaoImplementation();
+        this.student = new PojoStudent();
+        this.studentDao = new DaoStudent();
         this.ls = studentDao.readAll();
         initComponents();
     }
@@ -207,7 +207,7 @@ public class StudentView extends javax.swing.JFrame {
         String id = txtId.getText();
         
         try { 
-            Student e = studentDao.readSingle(Integer.parseInt(id));
+            PojoStudent e = studentDao.readSingle(Integer.parseInt(id));
             System.out.println("ID: " + e.getId() + 
                                "\nMatrícula: " + e.getMatricula() + 
                                "\nNombre: "  + e.getNombre() + 

@@ -7,27 +7,27 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.List;
-import model.Student;
 
 /**
  *
  * @author asunawesker
+ * @param <T>
  */
-public interface StudentDao {
+public interface IDaoGeneral <T> {
     
-    public int create(Student student)
+    public int create(T pojo)
         throws SQLException;
     
     public void delete(int id) 
         throws SQLException; 
     
-    public Student readSingle(int id) 
+    public T readSingle(int id) 
         throws SQLException; 
     
-    public List<Student> readAll() 
+    public List<T> readAll() 
         throws SQLException; 
     
-    public int update(Student student, int id) 
+    public int update(T pojo, int id) 
         throws SQLException;
     
 }
