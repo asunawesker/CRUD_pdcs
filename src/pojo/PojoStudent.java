@@ -10,7 +10,7 @@ public class PojoStudent {
     private String name;
     private String lastName;
     private String career;   
-    private String course_id;   
+    private int course_id;   
 
     public String getEnrollment() {
         return enrollment;
@@ -44,11 +44,11 @@ public class PojoStudent {
         this.career = career;
     }
 
-    public String getCourse_id() {
+    public int getCourse_id() {
         return course_id;
     }
 
-    public void setCourse_id(String course_id) {
+    public void setCourse_id(int course_id) {
         this.course_id = course_id;
     }
     

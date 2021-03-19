@@ -50,6 +50,8 @@ public class DaoCourse implements IDaoGeneral<PojoCourse>{
         
         int rows = ps.executeUpdate(); 
         
+        System.out.println("Creado");
+        
         // Devuelve valor de filas afectadas
         return rows;
     }

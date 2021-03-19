@@ -46,10 +46,13 @@ public class DaoStudent implements IDaoGeneral<PojoStudent>{
         
         ps.setString(1, student.getEnrollment()); 
         ps.setString(2, student.getName()); 
-        ps.setString(3, student.getCareer()); 
-        ps.setString(4, student.getCourse_id()); 
+        ps.setString(3, student.getLastName()); 
+        ps.setString(4, student.getCareer()); 
+        ps.setInt(5, student.getCourse_id()); 
         
         int rows = ps.executeUpdate(); 
+        
+        System.out.println("Creado");
         
         // Devuelve valor de filas afectadas
         return rows;
@@ -76,7 +79,7 @@ public class DaoStudent implements IDaoGeneral<PojoStudent>{
             student.setName(rs.getString("std_name")); 
             student.setLastName(rs.getString("std_lastname")); 
             student.setCareer(rs.getString("std_career")); 
-            student.setCourse_id(rs.getString("crs_id"));
+            student.setCourse_id(rs.getInt("crs_id"));
         } 
   
         return student;
@@ -95,7 +98,7 @@ public class DaoStudent implements IDaoGeneral<PojoStudent>{
             student.setName(rs.getString("std_name")); 
             student.setLastName(rs.getString("std_lastname")); 
             student.setCareer(rs.getString("std_career")); 
-            student.setCourse_id(rs.getString("crs_id"));
+            student.setCourse_id(rs.getInt("crs_id"));
             
             ls.add(student);
         } 

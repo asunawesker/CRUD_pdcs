@@ -46,10 +46,13 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor> {
         
         ps.setString(1, professor.getIdCard()); 
         ps.setString(2, professor.getName()); 
-        ps.setString(3, professor.getCareer()); 
-        ps.setString(4, professor.getCourse_id()); 
+        ps.setString(3, professor.getLastName()); 
+        ps.setString(4, professor.getCareer()); 
+        ps.setInt(5, professor.getCourse_id()); 
         
         int rows = ps.executeUpdate(); 
+        
+        System.out.println("Creado");
         
         // Devuelve valor de filas afectadas
         return rows;
@@ -76,7 +79,7 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor> {
             professor.setName(rs.getString("std_name")); 
             professor.setLastName(rs.getString("std_lastname")); 
             professor.setCareer(rs.getString("std_career")); 
-            professor.setCourse_id(rs.getString("crs_id"));
+            professor.setCourse_id(rs.getInt("crs_id"));
         } 
   
         return professor;
@@ -95,7 +98,7 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor> {
             professor.setName(rs.getString("std_name")); 
             professor.setLastName(rs.getString("std_lastname")); 
             professor.setCareer(rs.getString("std_career")); 
-            professor.setCourse_id(rs.getString("crs_id"));
+            professor.setCourse_id(rs.getInt("crs_id"));
             
             ls.add(professor);
         } 
