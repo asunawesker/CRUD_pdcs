@@ -19,7 +19,7 @@ import singleton.ConnectDB;
  *
  * @author asunawesker
  */
-public class DaoProfessor implements IDaoGeneral<PojoProfessor> {
+public class DaoProfessor implements IDaoGeneral<PojoProfessor, String> {
 
     private Connection connection;
     private PreparedStatement ps;
@@ -59,18 +59,18 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor> {
     }
 
     @Override
-    public void delete(int id) throws SQLException {
+    public void delete(String id) throws SQLException {
         ps = connection.prepareStatement(QUERIES[1]); 
         
-        ps.setInt(1, id); 
+        ps.setString(1, id); 
         ps.executeUpdate(); 
     }
 
     @Override
-    public PojoProfessor readSingle(int id) throws SQLException {
+    public PojoProfessor readSingle(String id) throws SQLException {
         ps = connection.prepareStatement(QUERIES[2]); 
   
-        ps.setInt(1, id);        
+        ps.setString(1, id);        
         ResultSet rs = ps.executeQuery(); 
         PojoProfessor professor = new PojoProfessor(); 
   
@@ -107,12 +107,12 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor> {
     }
 
     @Override
-    public int update(PojoProfessor professor, int id) throws SQLException {        
+    public int update(PojoProfessor professor, String id) throws SQLException {        
         ps = connection.prepareStatement(QUERIES[4]); 
         
         ps.setString(1, professor.getName()); 
         ps.setString(2, professor.getLastName()); 
-        ps.setInt(3, id);
+        ps.setString(3, id);
         
         int rows = ps.executeUpdate();
         

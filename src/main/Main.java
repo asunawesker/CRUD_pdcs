@@ -11,7 +11,8 @@ import java.sql.SQLException;
 import pojo.PojoCourse;
 import pojo.PojoProfessor;
 import pojo.PojoStudent;
-import view.StudentView;
+import view.PrincipalView;
+import view.StudentCreate;
 
 /**
  *
@@ -25,8 +26,11 @@ public class Main {
      */
     public static void main(String[] args) throws SQLException {
         
-        //StudentView view = new StudentView();
+        //StudentView view = new StudentCreate();
         //view.setVisible(true);   
+        
+        PrincipalView view = new PrincipalView();
+        view.setVisible(true);
         
 //        PojoCourse course = new PojoCourse();
 //        
@@ -48,16 +52,16 @@ public class Main {
 //        IDaoGeneral<PojoProfessor> dao = FactoryDao.create(FactoryDao.TypeDAO.PROFESSOR);
 //        dao.create(professor);
 //        
-        PojoStudent student = new PojoStudent();
-        
-        student.setEnrollment("S19004913");
-        student.setName("Iraís");
-        student.setLastName("Aguirre");
-        student.setCareer("ISW");
-        student.setCourse_id(1);
-        
-        IDaoGeneral<PojoStudent> dao = FactoryDao.create(FactoryDao.TypeDAO.STUDENT);
-        dao.create(student);
+//        PojoStudent student = new PojoStudent();
+//        
+//        student.setEnrollment("S19004913");
+//        student.setName("Iraís");
+//        student.setLastName("Aguirre");
+//        student.setCareer("ISW");
+//        student.setCourse_id(1);
+//        
+//        IDaoGeneral<PojoStudent> dao = FactoryDao.create(FactoryDao.TypeDAO.STUDENT);
+//        dao.create(student);
         
     }
     

@@ -19,7 +19,7 @@ import dao.IDaoGeneral;
  *
  * @author asunawesker
  */
-public class DaoStudent implements IDaoGeneral<PojoStudent>{
+public class DaoStudent implements IDaoGeneral<PojoStudent, String>{
     
     private Connection connection;
     private PreparedStatement ps;
@@ -33,7 +33,7 @@ public class DaoStudent implements IDaoGeneral<PojoStudent>{
     
     private final String[] QUERIES = {
         "INSERT INTO students (std_enrollment, std_name, std_lastname, std_career, crs_id) VALUES (?, ?, ?, ?, ?)",
-        "DELETE FROM students WHERE std_enrollment = ?",
+        "DELETE FROM students WHERE std_enrollment =  ?",
         "SELECT * FROM students WHERE std_enrollment = ?",
         "SELECT * FROM students",
         "UPDATE students SET std_career=? WHERE (std_enrollment = ?)"
@@ -59,30 +59,31 @@ public class DaoStudent implements IDaoGeneral<PojoStudent>{
     }
 
     @Override
-    public void delete(int id) throws SQLException {
+    public void delete(String student) throws SQLException {
         ps = connection.prepareStatement(QUERIES[1]); 
         
-        ps.setInt(1, id); 
+        ps.setString(1, student); 
         ps.executeUpdate(); 
+        
+        System.out.println("Eliminado");
     }
 
-    @Override
-    public PojoStudent readSingle(int id) throws SQLException {
+    public PojoStudent readSingle(String student) throws SQLException {
         ps = connection.prepareStatement(QUERIES[2]); 
   
-        ps.setInt(1, id);        
+        ps.setString(1, student);        
         ResultSet rs = ps.executeQuery(); 
-        PojoStudent student = new PojoStudent(); 
+        PojoStudent s = new PojoStudent(); 
   
         while (rs.next()) { 
-            student.setEnrollment(rs.getString("std_enrollment"));             
-            student.setName(rs.getString("std_name")); 
-            student.setLastName(rs.getString("std_lastname")); 
-            student.setCareer(rs.getString("std_career")); 
-            student.setCourse_id(rs.getInt("crs_id"));
+            s.setEnrollment(rs.getString("std_enrollment"));             
+            s.setName(rs.getString("std_name")); 
+            s.setLastName(rs.getString("std_lastname")); 
+            s.setCareer(rs.getString("std_career")); 
+            s.setCourse_id(rs.getInt("crs_id"));
         } 
   
-        return student;
+        return s;
     }
 
     @Override
@@ -107,13 +108,17 @@ public class DaoStudent implements IDaoGeneral<PojoStudent>{
     }
 
     @Override
-    public int update(PojoStudent student, int id) throws SQLException {        
+    public int update(PojoStudent student, String id) throws SQLException {        
         ps = connection.prepareStatement(QUERIES[4]); 
         
+        System.out.println(student.getCareer());
+        
         ps.setString(1, student.getCareer()); 
-        ps.setInt(2, id);
+        ps.setString(2, id);
         
         int rows = ps.executeUpdate();
+        
+        System.out.println("Actualizado");
         
         return rows;
     }

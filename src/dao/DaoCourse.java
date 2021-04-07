@@ -12,14 +12,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import pojo.PojoCourse;
-import pojo.PojoCourse;
 import singleton.ConnectDB;
 
 /**
  *
  * @author asunawesker
  */
-public class DaoCourse implements IDaoGeneral<PojoCourse>{
+public class DaoCourse implements IDaoGeneral<PojoCourse, Integer>{
     
     private Connection connection;
     private PreparedStatement ps;
@@ -36,7 +35,7 @@ public class DaoCourse implements IDaoGeneral<PojoCourse>{
         "DELETE FROM courses WHERE crs_id = ?",
         "SELECT * FROM courses WHERE crs_id = ?",
         "SELECT * FROM courses",
-        "UPDATE courses SET crs_name WHERE (crs_id = ?)"
+        "UPDATE courses SET crs_name = ? WHERE (crs_id = ?)"
     };
 
     @Override
@@ -55,9 +54,9 @@ public class DaoCourse implements IDaoGeneral<PojoCourse>{
         // Devuelve valor de filas afectadas
         return rows;
     }
-
+    
     @Override
-    public void delete(int id) throws SQLException {
+    public void delete(Integer id) throws SQLException {
         ps = connection.prepareStatement(QUERIES[1]); 
         
         ps.setInt(1, id); 
@@ -65,7 +64,7 @@ public class DaoCourse implements IDaoGeneral<PojoCourse>{
     }
 
     @Override
-    public PojoCourse readSingle(int id) throws SQLException {
+    public PojoCourse readSingle(Integer id) throws SQLException {
         ps = connection.prepareStatement(QUERIES[2]); 
   
         ps.setInt(1, id);        
@@ -74,8 +73,8 @@ public class DaoCourse implements IDaoGeneral<PojoCourse>{
   
         while (rs.next()) { 
             course.setId(rs.getInt("crs_id"));             
-            course.setName(rs.getString("std_name")); 
-            course.setCredits(rs.getInt("std_lastname"));
+            course.setName(rs.getString("crs_name")); 
+            course.setCredits(rs.getInt("crs_credits"));
         } 
   
         return course;
@@ -91,17 +90,17 @@ public class DaoCourse implements IDaoGeneral<PojoCourse>{
         while (rs.next()){
             course = new PojoCourse();
             course.setId(rs.getInt("crs_id"));             
-            course.setName(rs.getString("std_name")); 
-            course.setCredits(rs.getInt("std_lastname"));
+            course.setName(rs.getString("crs_name")); 
+            course.setCredits(rs.getInt("crs_credits"));
             
             ls.add(course);
         } 
         
         return ls; 
     }
-
+    
     @Override
-    public int update(PojoCourse course, int id) throws SQLException {        
+    public int update(PojoCourse course, Integer id) throws SQLException {        
         ps = connection.prepareStatement(QUERIES[4]); 
         
         ps.setString(1, course.getName()); 
