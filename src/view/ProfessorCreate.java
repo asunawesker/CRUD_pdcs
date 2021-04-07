@@ -5,7 +5,6 @@
  */
 package view;
 
-import java.util.List;
 import pojo.PojoProfessor;
 import dao.IDaoGeneral;
 import dao.FactoryDao;
@@ -46,11 +45,11 @@ public class ProfessorCreate extends javax.swing.JInternalFrame {
         txtMatricula = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        comboBox = new javax.swing.JComboBox<>();
         txtId = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtApellido = new javax.swing.JTextField();
+        txtCarrera = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("Profesor");
@@ -73,13 +72,6 @@ public class ProfessorCreate extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel1.setText("ID");
-
-        comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "ISW", "CON", "ADM", "GDN", "LSC" }));
-        comboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboBoxActionPerformed(evt);
-            }
-        });
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel5.setText("Apellido");
@@ -105,7 +97,7 @@ public class ProfessorCreate extends javax.swing.JInternalFrame {
                                 .addGap(35, 35, 35)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel6)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,7 +130,7 @@ public class ProfessorCreate extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,37 +154,32 @@ public class ProfessorCreate extends javax.swing.JInternalFrame {
         idCard = txtMatricula.getText();
         name = txtNombre.getText();
         lastName = txtApellido.getText();
-        career = (String) comboBox.getSelectedItem();
+        career = txtCarrera.getText();
         course_id = Integer.parseInt(txtId.getText());
 
         professor.setIdCard(idCard);
         professor.setName(name);
-        professor.setLastName(name);
+        professor.setLastName(lastName);
         professor.setCareer(career);
         professor.setCourse_id(course_id);
 
         try {
             dao.create(professor);
-            System.out.println("Agregado");
         } catch (SQLException ex) {
             Logger.getLogger(StudentCreate.class.getName()).log(Level.SEVERE, null, ex);
         }            
     }//GEN-LAST:event_btnAñadirActionPerformed
 
-    private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboBoxActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAñadir;
-    private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField txtApellido;
+    private javax.swing.JTextField txtCarrera;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtNombre;

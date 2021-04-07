@@ -47,7 +47,6 @@ public class CourseSearch extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         btnVerUno = new javax.swing.JButton();
         btnVerTodos = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Buscar curso");
@@ -70,13 +69,6 @@ public class CourseSearch extends javax.swing.JInternalFrame {
             }
         });
 
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,13 +80,11 @@ public class CourseSearch extends javax.swing.JInternalFrame {
                 .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                 .addGap(76, 76, 76))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(83, 83, 83)
                 .addComponent(btnVerUno)
-                .addGap(37, 37, 37)
+                .addGap(54, 54, 54)
                 .addComponent(btnVerTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(41, 41, 41)
-                .addComponent(btnEliminar)
-                .addGap(34, 34, 34))
+                .addGap(96, 96, 96))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,9 +96,8 @@ public class CourseSearch extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVerUno)
-                    .addComponent(btnVerTodos)
-                    .addComponent(btnEliminar))
-                .addContainerGap(189, Short.MAX_VALUE))
+                    .addComponent(btnVerTodos))
+                .addContainerGap(192, Short.MAX_VALUE))
         );
 
         pack();
@@ -150,21 +139,8 @@ public class CourseSearch extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnVerTodosActionPerformed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        int id =Integer.parseInt(txtId.getText());
-
-        try {
-            dao.delete(id);
-            System.out.println("Eliminado");
-        } catch (SQLException ex) {
-            Logger.getLogger(StudentCreate.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnVerTodos;
     private javax.swing.JButton btnVerUno;
     private javax.swing.JLabel jLabel8;

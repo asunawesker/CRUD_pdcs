@@ -140,6 +140,11 @@ public class PrincipalView extends javax.swing.JFrame {
         jMenu4.add(mnCourseUpdate);
 
         mnProfessorUpdate.setText("Profesor");
+        mnProfessorUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnProfessorUpdateActionPerformed(evt);
+            }
+        });
         jMenu4.add(mnProfessorUpdate);
 
         mnStudentUpdate.setText("Estudiante");
@@ -271,6 +276,19 @@ public class PrincipalView extends javax.swing.JFrame {
             Logger.getLogger(PrincipalView.class.getName()).log(Level.SEVERE, null, ex);
         }    
     }//GEN-LAST:event_mnProfessorCreateActionPerformed
+
+    private void mnProfessorUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnProfessorUpdateActionPerformed
+        // TODO add your handling code here:
+        ProfessorUpdate professor;
+        
+        try {
+            professor = new ProfessorUpdate();
+            jDesktopPane1.add(professor);
+            professor.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(PrincipalView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_mnProfessorUpdateActionPerformed
 
     /**
      * @param args the command line arguments

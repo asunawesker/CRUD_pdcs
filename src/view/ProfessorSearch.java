@@ -47,7 +47,6 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
         txtId = new javax.swing.JTextField();
         btnVerUno = new javax.swing.JButton();
         btnVerTodos = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -69,13 +68,6 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
             }
         });
 
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,13 +79,11 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
                 .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                 .addGap(76, 76, 76))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(83, 83, 83)
                 .addComponent(btnVerUno)
-                .addGap(36, 36, 36)
+                .addGap(52, 52, 52)
                 .addComponent(btnVerTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(33, 33, 33)
-                .addComponent(btnEliminar)
-                .addGap(50, 50, 50))
+                .addGap(98, 98, 98))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,9 +95,8 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVerUno)
-                    .addComponent(btnVerTodos)
-                    .addComponent(btnEliminar))
-                .addContainerGap(189, Short.MAX_VALUE))
+                    .addComponent(btnVerTodos))
+                .addContainerGap(192, Short.MAX_VALUE))
         );
 
         pack();
@@ -115,29 +104,47 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
 
     private void btnVerUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUnoActionPerformed
         // TODO add your handling code here:
+        String id = txtId.getText();
         
+        try { 
+            PojoProfessor e = dao.readSingle(id);
+            System.out.println(
+                "\nMatrícula: " + e.getIdCard()+
+                "\nNombre: "  + e.getName()+
+                "\nApellido: "  + e.getLastName()+
+                "\nCarrera: "   + e.getCareer()+
+                "\n"
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnVerUnoActionPerformed
 
     private void btnVerTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTodosActionPerformed
         // TODO add your handling code here:
+        ls.clear();
         
-    }//GEN-LAST:event_btnVerTodosActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        String id = txtId.getText();
-
         try {
-            dao.delete(id);
-            System.out.println("Eliminado");
+            ls = dao.readAll();
+            
+            ls.forEach((professor) -> {
+                System.out.println(
+                    "\nMatrícula: " + professor.getIdCard()+
+                    "\nNombre: "  + professor.getName()+
+                    "\nApellido: "  + professor.getLastName()+
+                    "\nCarrera: "   + professor.getCareer()+
+                    "\n"
+                );
+                
+            }); 
+            
         } catch (SQLException ex) {
-            Logger.getLogger(StudentCreate.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnEliminarActionPerformed
+            Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+    }//GEN-LAST:event_btnVerTodosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnVerTodos;
     private javax.swing.JButton btnVerUno;
     private javax.swing.JLabel jLabel8;

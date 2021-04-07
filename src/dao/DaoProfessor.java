@@ -36,7 +36,7 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor, String> {
         "DELETE FROM professors WHERE pfs_idcard = ?",
         "SELECT * FROM professors WHERE pfs_idcard = ?",
         "SELECT * FROM professors",
-        "UPDATE professors SET pfs_name=?, pfs_lastname=? WHERE (pfs_idcard = ?)"
+        "UPDATE professors SET pfs_career = ? WHERE (pfs_idcard = ?)"
     };
 
     @Override
@@ -64,6 +64,8 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor, String> {
         
         ps.setString(1, id); 
         ps.executeUpdate(); 
+        
+        System.out.println("Eliminado");
     }
 
     @Override
@@ -76,9 +78,9 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor, String> {
   
         while (rs.next()) { 
             professor.setIdCard(rs.getString("pfs_idcard"));             
-            professor.setName(rs.getString("std_name")); 
-            professor.setLastName(rs.getString("std_lastname")); 
-            professor.setCareer(rs.getString("std_career")); 
+            professor.setName(rs.getString("pfs_name")); 
+            professor.setLastName(rs.getString("pfs_lastname")); 
+            professor.setCareer(rs.getString("pfs_career")); 
             professor.setCourse_id(rs.getInt("crs_id"));
         } 
   
@@ -95,9 +97,9 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor, String> {
         while (rs.next()){
             professor = new PojoProfessor();
             professor.setIdCard(rs.getString("pfs_idcard"));             
-            professor.setName(rs.getString("std_name")); 
-            professor.setLastName(rs.getString("std_lastname")); 
-            professor.setCareer(rs.getString("std_career")); 
+            professor.setName(rs.getString("pfs_name")); 
+            professor.setLastName(rs.getString("pfs_lastname")); 
+            professor.setCareer(rs.getString("pfs_career")); 
             professor.setCourse_id(rs.getInt("crs_id"));
             
             ls.add(professor);
@@ -110,11 +112,12 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor, String> {
     public int update(PojoProfessor professor, String id) throws SQLException {        
         ps = connection.prepareStatement(QUERIES[4]); 
         
-        ps.setString(1, professor.getName()); 
-        ps.setString(2, professor.getLastName()); 
-        ps.setString(3, id);
+        ps.setString(1, professor.getCareer()); 
+        ps.setString(2, id);
         
         int rows = ps.executeUpdate();
+        
+        System.out.println("Actualizado");
         
         return rows;
     }
