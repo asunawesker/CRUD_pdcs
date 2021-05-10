@@ -149,7 +149,7 @@ public class StudentUpdate extends javax.swing.JInternalFrame {
             enrollment = txtMatricula.getText();
             dao.delete(enrollment);
         } catch (SQLException ex) {
-            Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentUpdate.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEliminar2ActionPerformed
 

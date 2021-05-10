@@ -106,20 +106,18 @@ public class StudentSearch extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVerUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUnoActionPerformed
-        // TODO add your handling code here:
-        String id = txtId.getText();
-        
-        try { 
+        try {
+            String id = txtId.getText();            
             PojoStudent e = dao.readSingle(id);
             System.out.println(
-                "\nMatrícula: " + e.getEnrollment()+
-                "\nNombre: "  + e.getName()+
-                "\nApellido: "  + e.getLastName()+
-                "\nCarrera: "   + e.getCareer()+
-                "\n"
+                    "\nMatrícula: " + e.getEnrollment()+
+                            "\nNombre: "  + e.getName()+
+                            "\nApellido: "  + e.getLastName()+
+                            "\nCarrera: "   + e.getCareer()+
+                            "\n"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentSearch.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnVerUnoActionPerformed
 
@@ -142,7 +140,7 @@ public class StudentSearch extends javax.swing.JInternalFrame {
             }); 
             
         } catch (SQLException ex) {
-            Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentSearch.class.getName()).log(Level.SEVERE, null, ex);
         }     
     }//GEN-LAST:event_btnVerTodosActionPerformed
 

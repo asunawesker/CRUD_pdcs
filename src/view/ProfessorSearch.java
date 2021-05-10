@@ -105,9 +105,10 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
     private void btnVerUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUnoActionPerformed
         // TODO add your handling code here:
         String id = txtId.getText();
-        
-        try { 
-            PojoProfessor e = dao.readSingle(id);
+                
+        try {
+            PojoProfessor e;
+            e = dao.readSingle(id);
             System.out.println(
                 "\nMatrícula: " + e.getIdCard()+
                 "\nNombre: "  + e.getName()+
@@ -116,8 +117,8 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
                 "\n"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Logger.getLogger(ProfessorSearch.class.getName()).log(Level.SEVERE, null, ex);
+        }            
     }//GEN-LAST:event_btnVerUnoActionPerformed
 
     private void btnVerTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTodosActionPerformed
@@ -139,7 +140,7 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
             }); 
             
         } catch (SQLException ex) {
-            Logger.getLogger(StudentView.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProfessorSearch.class.getName()).log(Level.SEVERE, null, ex);
         }   
     }//GEN-LAST:event_btnVerTodosActionPerformed
 
