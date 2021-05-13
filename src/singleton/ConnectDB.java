@@ -12,17 +12,16 @@ import java.util.logging.Logger;
  */
 public class ConnectDB {
     
-    private static ConnectDB connectionInstance = null;
-    private Connection connectionDB;
-    
-    private final String URL = "jdbc:postgresql://localhost:5432/uv";
+     private static ConnectDB connectionInstance = null;
+    private Connection connectionDB = null;     
+    private final String URL = "jdbc:postgresql://localhost:5432/inyec_depen";
     private final String USER = "postgres";
     private final String PASSWORD = "yamaha112";
     
-    public ConnectDB() throws SQLException {
+    private ConnectDB() {
         try {
             connectionDB = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conectado");            
+            System.out.println("Felicidades, no eres tan inútil");            
         } catch(SQLException e) {
             Logger.getLogger(ConnectDB.class.getName()).log(Level.WARNING, null, e);            
         }
@@ -34,9 +33,10 @@ public class ConnectDB {
                    
         return connectionInstance;
     }
-       
-    public Connection getConnection(){
-        return connectionDB;
+    
+    public boolean execute(TransactionDB transaction) {
+        boolean response = transaction.execute(connectionDB);
+        return response;
     }
     
 }

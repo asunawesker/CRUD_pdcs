@@ -12,13 +12,14 @@ import java.util.List;
  *
  * @author asunawesker
  * @param <T>
+ * @param <V>
  */
 public interface IDaoGeneral <T, V> {
     
-    public int create(T pojo)
-        throws SQLException;
+    public boolean create(T pojo)
+        throws SQLException; 
     
-    public void delete(V id) 
+    public boolean delete(V id) 
         throws SQLException; 
     
     public T readSingle(V id) 
@@ -27,7 +28,7 @@ public interface IDaoGeneral <T, V> {
     public List<T> readAll() 
         throws SQLException; 
     
-    public int update(T pojo, V id) 
+    public boolean update(T pojo, V id) 
         throws SQLException;
     
 }

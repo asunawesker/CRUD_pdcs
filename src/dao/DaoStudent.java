@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import pojo.PojoStudent;
 import dao.IDaoGeneral;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import singleton.TransactionDB;
 
 /**
  *
@@ -21,15 +24,14 @@ import dao.IDaoGeneral;
  */
 public class DaoStudent implements IDaoGeneral<PojoStudent, String>{
     
-    private Connection connection;
-    private PreparedStatement ps;
-    private List<PojoStudent> ls;     
-    
-    public DaoStudent() throws SQLException{
-        connection = ConnectDB.getInstance().getConnection();
-        ls = new ArrayList();
-        
-    }
+    private PreparedStatement  preparedStatement;
+    private ConnectDB connection ;
+    private List <PojoStudent> ls;
+    private PojoStudent student;
+
+    public DaoStudent() throws SQLException {
+        connection = ConnectDB.getInstance();        
+    }        
     
     private final String[] QUERIES = {
         "INSERT INTO students (std_enrollment, std_name, std_lastname, std_career, crs_id) VALUES (?, ?, ?, ?, ?)",
@@ -40,87 +42,173 @@ public class DaoStudent implements IDaoGeneral<PojoStudent, String>{
     };
 
     @Override
-    public int create(PojoStudent student) throws SQLException {
+    public boolean create(PojoStudent student) throws SQLException {
+        boolean response;
+        TransactionDB t;
         
-        ps = connection.prepareStatement(QUERIES[0]); 
+        t = new TransactionDB<PojoStudent>(student) {
+            @Override
+            public boolean execute(Connection connection) {
+                boolean response = false;
+                
+                try {
+                    preparedStatement = connection.prepareStatement(QUERIES[0]); 
         
-        ps.setString(1, student.getEnrollment()); 
-        ps.setString(2, student.getName()); 
-        ps.setString(3, student.getLastName()); 
-        ps.setString(4, student.getCareer()); 
-        ps.setInt(5, student.getCourse_id()); 
-        
-        int rows = ps.executeUpdate(); 
-        
-        System.out.println("Creado");
-        
-        // Devuelve valor de filas afectadas
-        return rows;
+                    preparedStatement.setString(1, student.getEnrollment()); 
+                    preparedStatement.setString(2, student.getName()); 
+                    preparedStatement.setString(3, student.getLastName()); 
+                    preparedStatement.setString(4, student.getCareer()); 
+                    preparedStatement.setInt(5, student.getCourse_id()); 
+
+                    preparedStatement.executeUpdate(); 
+                    
+                    System.out.println("PojoCourse guardada");
+                     
+                     response = true;                     
+                 } catch (SQLException ex) {
+                     Logger.getLogger(DaoCourse.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+                 
+                 return response;
+             }
+         };         
+         response = connection.execute(t);
+         return response;    
     }
 
     @Override
-    public void delete(String student) throws SQLException {
-        ps = connection.prepareStatement(QUERIES[1]); 
+    public boolean delete(String student) throws SQLException {
+        boolean response;
+        TransactionDB t;        
+               
+         t = new TransactionDB<PojoStudent>(){
+            @Override
+            public boolean execute(Connection connection) {
+                boolean response = false;
+                
+                try {
+                    preparedStatement = connection.prepareStatement(QUERIES[1]); 
         
-        ps.setString(1, student); 
-        ps.executeUpdate(); 
-        
-        System.out.println("Eliminado");
+                    preparedStatement.setString(1, student); 
+                    preparedStatement.executeUpdate(); 
+                    
+                    System.out.println("Persona eliminada");
+                    
+                    response = true;
+                } catch (SQLException ex) {
+                    Logger.getLogger(DaoCourse.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                return response;
+            }            
+        };        
+        response = connection.execute(t);        
+        return response;
     }
 
-    public PojoStudent readSingle(String student) throws SQLException {
-        ps = connection.prepareStatement(QUERIES[2]); 
+    public PojoStudent readSingle(String enrollment) throws SQLException {
+        boolean response;
+        TransactionDB t;    
+        
+        t = new TransactionDB<PojoStudent>(){
+           @Override
+           public boolean execute(Connection connection) {
+               boolean response = false;
+               
+               try {
+                    preparedStatement = connection.prepareStatement(QUERIES[2]); 
   
-        ps.setString(1, student);        
-        ResultSet rs = ps.executeQuery(); 
-        PojoStudent s = new PojoStudent(); 
-  
-        while (rs.next()) { 
-            s.setEnrollment(rs.getString("std_enrollment"));             
-            s.setName(rs.getString("std_name")); 
-            s.setLastName(rs.getString("std_lastname")); 
-            s.setCareer(rs.getString("std_career")); 
-            s.setCourse_id(rs.getInt("crs_id"));
-        } 
-  
-        return s;
+                    preparedStatement.setString(1, enrollment);        
+                    ResultSet rs = preparedStatement.executeQuery(); 
+                    student = new PojoStudent(); 
+
+                    while (rs.next()) { 
+                        student.setEnrollment(rs.getString("std_enrollment"));             
+                        student.setName(rs.getString("std_name")); 
+                        student.setLastName(rs.getString("std_lastname")); 
+                        student.setCareer(rs.getString("std_career")); 
+                        student.setCourse_id(rs.getInt("crs_id"));
+                    } 
+                    
+                    response = true;
+               } catch (SQLException ex) {
+                   Logger.getLogger(DaoCourse.class.getName()).log(Level.SEVERE, null, ex);
+               }
+               
+               return response;
+           }  
+        };
+        connection.execute(t);
+        return student;
     }
 
     @Override
     public List<PojoStudent> readAll() throws SQLException {
-        
-        ps = connection.prepareStatement(QUERIES[3]); 
-        ResultSet rs = ps.executeQuery();
-        PojoStudent student; 
-              
-        while (rs.next()){
-            student = new PojoStudent();
-            student.setEnrollment(rs.getString("std_enrollment"));             
-            student.setName(rs.getString("std_name")); 
-            student.setLastName(rs.getString("std_lastname")); 
-            student.setCareer(rs.getString("std_career")); 
-            student.setCourse_id(rs.getInt("crs_id"));
-            
-            ls.add(student);
-        } 
-        
-        return ls; 
+        TransactionDB t;
+        ls = new ArrayList<>();
+                
+        t = new TransactionDB<PojoStudent>() {
+            @Override
+            public boolean execute(Connection connection) {
+                boolean response = false;
+                try {
+                    PojoStudent student;
+                    
+                    preparedStatement = connection.prepareStatement(QUERIES[3]); 
+                    ResultSet rs = preparedStatement.executeQuery();
+                   
+                    while (rs.next()){
+                        student = new PojoStudent();
+                        student.setEnrollment(rs.getString("std_enrollment"));             
+                        student.setName(rs.getString("std_name")); 
+                        student.setLastName(rs.getString("std_lastname")); 
+                        student.setCareer(rs.getString("std_career")); 
+                        student.setCourse_id(rs.getInt("crs_id"));
+
+                        ls.add(student);
+                    } 
+                    response = true;
+                    return response;
+                } catch (SQLException ex) {
+                    Logger.getLogger(DaoCourse.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return response;
+            }            
+        };
+         connection.execute(t);        
+         return ls;
     }
 
     @Override
-    public int update(PojoStudent student, String id) throws SQLException {        
-        ps = connection.prepareStatement(QUERIES[4]); 
+    public boolean update(PojoStudent student, String enrollment) throws SQLException {        
+         TransactionDB t;
+        boolean response;
         
-        System.out.println(student.getCareer());
+        t = new TransactionDB<PojoStudent>(student){
+            @Override
+            public boolean execute(Connection connection) {
+                boolean response = false;
+                try {
+                    preparedStatement = connection.prepareStatement(QUERIES[4]); 
         
-        ps.setString(1, student.getCareer()); 
-        ps.setString(2, id);
-        
-        int rows = ps.executeUpdate();
-        
-        System.out.println("Actualizado");
-        
-        return rows;
+                    System.out.println(student.getCareer());
+
+                    preparedStatement.setString(1, student.getCareer()); 
+                    preparedStatement.setString(2, enrollment);
+
+                    preparedStatement.executeUpdate();
+
+                    System.out.println("Actualizado");
+                    
+                    response = true;                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(DaoCourse.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return response;
+            }            
+        };
+        response = connection.execute(t);
+        return response;
     }
     
 }
