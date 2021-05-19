@@ -32,6 +32,7 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
         this.professor = new PojoProfessor();
         this.dao = FactoryDao.create(FactoryDao.TypeDAO.PROFESSOR);
         this.ls = dao.readAll();
+        initComponents();
     }
 
     /**
@@ -47,6 +48,8 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
         txtId = new javax.swing.JTextField();
         btnVerUno = new javax.swing.JButton();
         btnVerTodos = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
 
         setClosable(true);
 
@@ -68,6 +71,28 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
             }
         });
 
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Apellido", "Carrera"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.setFillsViewportHeight(true);
+        jScrollPane2.setViewportView(table);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,6 +109,10 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
                 .addGap(52, 52, 52)
                 .addComponent(btnVerTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(98, 98, 98))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,7 +125,9 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVerUno)
                     .addComponent(btnVerTodos))
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -104,21 +135,24 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
 
     private void btnVerUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUnoActionPerformed
         // TODO add your handling code here:
+        ls.clear();
+        
         String id = txtId.getText();
-                
-        try {
-            PojoProfessor e;
-            e = dao.readSingle(id);
-            System.out.println(
-                "\nMatrícula: " + e.getIdCard()+
-                "\nNombre: "  + e.getName()+
-                "\nApellido: "  + e.getLastName()+
-                "\nCarrera: "   + e.getCareer()+
-                "\n"
-            );
+        
+        try { 
+            PojoProfessor e = dao.readSingle(id);
+            ls.add(e);
+//            System.out.println(
+//                "\nMatrícula: " + e.getIdCard()+
+//                "\nNombre: "  + e.getName()+
+//                "\nApellido: "  + e.getLastName()+
+//                "\nCarrera: "   + e.getCareer()+
+//                "\n"
+//            );
+            showTable(ls);
         } catch (SQLException ex) {
             Logger.getLogger(ProfessorSearch.class.getName()).log(Level.SEVERE, null, ex);
-        }            
+        }
     }//GEN-LAST:event_btnVerUnoActionPerformed
 
     private void btnVerTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTodosActionPerformed
@@ -126,29 +160,47 @@ public class ProfessorSearch extends javax.swing.JInternalFrame {
         ls.clear();
         
         try {
-            ls = dao.readAll();
-            
-            ls.forEach((professor) -> {
-                System.out.println(
-                    "\nMatrícula: " + professor.getIdCard()+
-                    "\nNombre: "  + professor.getName()+
-                    "\nApellido: "  + professor.getLastName()+
-                    "\nCarrera: "   + professor.getCareer()+
-                    "\n"
-                );
-                
-            }); 
-            
+            ls = dao.readAll();            
+//            ls.forEach((professor) -> {
+//                System.out.println(
+//                    "\nMatrícula: " + professor.getIdCard()+
+//                    "\nNombre: "  + professor.getName()+
+//                    "\nApellido: "  + professor.getLastName()+
+//                    "\nCarrera: "   + professor.getCareer()+
+//                    "\n"
+//                );
+//                
+//            }); 
+            showTable(ls);    
         } catch (SQLException ex) {
             Logger.getLogger(ProfessorSearch.class.getName()).log(Level.SEVERE, null, ex);
         }   
     }//GEN-LAST:event_btnVerTodosActionPerformed
 
-
+    private void showTable(List<PojoProfessor> ls){
+        Object matrix [][] = new Object[ls.size()][4];
+        
+        for (int i = 0; i < ls.size(); i++) {
+            matrix [i][0] = ls.get(i).getIdCard();
+            matrix [i][1] = ls.get(i).getName();
+            matrix [i][2] = ls.get(i).getLastName();
+            matrix [i][3] = ls.get(i).getCareer();
+        }
+        
+         table.setModel(new javax.swing.table.DefaultTableModel(
+            matrix,
+            new String [] {
+                "ID", "Nombre", "Apellido", "Carrera"
+            }
+        ));
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVerTodos;
     private javax.swing.JButton btnVerUno;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable table;
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }

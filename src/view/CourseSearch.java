@@ -43,13 +43,32 @@ public class CourseSearch extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         txtId = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         btnVerUno = new javax.swing.JButton();
         btnVerTodos = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         setClosable(true);
         setTitle("Buscar curso");
+        setPreferredSize(new java.awt.Dimension(405, 315));
+        setRequestFocusEnabled(false);
 
         jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel8.setText("ID");
@@ -69,6 +88,20 @@ public class CourseSearch extends javax.swing.JInternalFrame {
             }
         });
 
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Créditos"
+            }
+        ));
+        table.setFillsViewportHeight(true);
+        jScrollPane2.setViewportView(table);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -77,14 +110,18 @@ public class CourseSearch extends javax.swing.JInternalFrame {
                 .addGap(65, 65, 65)
                 .addComponent(jLabel8)
                 .addGap(24, 24, 24)
-                .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addComponent(txtId)
                 .addGap(76, 76, 76))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(83, 83, 83)
                 .addComponent(btnVerUno)
                 .addGap(54, 54, 54)
-                .addComponent(btnVerTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnVerTodos, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addGap(96, 96, 96))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,7 +134,9 @@ public class CourseSearch extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVerUno)
                     .addComponent(btnVerTodos))
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -105,15 +144,19 @@ public class CourseSearch extends javax.swing.JInternalFrame {
 
     private void btnVerUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUnoActionPerformed
         // TODO add your handling code here:
+        ls.clear();
+        
         int id =Integer.parseInt(txtId.getText());
 
         try {
-            PojoCourse c = dao.readSingle(id);
-            System.out.println(
-                "\nId: " + c.getId()+
-                "\nNombre: "  + c.getName()+
-                "\nCréditos: "  + c.getCredits()+
-                "\n");
+            PojoCourse course = dao.readSingle(id);
+            ls.add(course);
+//            System.out.println(
+//                "\nId: " + course.getId()+
+//                "\nNombre: "  + course.getName()+
+//                "\nCréditos: "  + course.getCredits()+
+//                "\n");
+            showTable(ls);
         } catch (SQLException ex) {
             Logger.getLogger(StudentCreate.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -124,26 +167,45 @@ public class CourseSearch extends javax.swing.JInternalFrame {
         ls.clear();
 
         try {
-            ls = dao.readAll();
-
-            ls.forEach((course) -> {
-                System.out.println(
-                    "\nId: " + course.getId()+
-                    "\nNombre: "  + course.getName()+
-                    "\nCréditos: "  + course.getCredits()+
-                    "\n");
-            });
-
+            ls = dao.readAll();//
+//            ls.forEach((course) -> {
+//                System.out.println(
+//                    "\nId: " + course.getId()+
+//                    "\nNombre: "  + course.getName()+
+//                    "\nCréditos: "  + course.getCredits()+
+//                    "\n");
+//            });            
+            showTable(ls);            
         } catch (SQLException ex) {
             Logger.getLogger(StudentCreate.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnVerTodosActionPerformed
-
+        
+    private void showTable(List<PojoCourse> ls){
+        Object matrix [][] = new Object[ls.size()][3];
+        
+        for (int i = 0; i < ls.size(); i++) {
+            matrix [i][0] = ls.get(i).getId();
+            matrix [i][1] = ls.get(i).getName();
+            matrix [i][2] = ls.get(i).getCredits();
+        }
+        
+         table.setModel(new javax.swing.table.DefaultTableModel(
+            matrix,
+            new String [] {
+                "ID", "Nombre", "Créditos"
+            }
+        ));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVerTodos;
     private javax.swing.JButton btnVerUno;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable table;
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }

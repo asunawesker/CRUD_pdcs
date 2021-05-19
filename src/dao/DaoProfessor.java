@@ -119,7 +119,7 @@ public class DaoProfessor implements IDaoGeneral<PojoProfessor, String> {
   
                     preparedStatement.setString(1, id);        
                     ResultSet rs = preparedStatement.executeQuery(); 
-                    PojoProfessor professor = new PojoProfessor(); 
+                    professor = new PojoProfessor(); 
 
                     while (rs.next()) { 
                         professor.setIdCard(rs.getString("pfs_idcard"));             

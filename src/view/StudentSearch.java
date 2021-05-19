@@ -47,6 +47,8 @@ public class StudentSearch extends javax.swing.JInternalFrame {
         txtId = new javax.swing.JTextField();
         btnVerUno = new javax.swing.JButton();
         btnVerTodos = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
 
         setClosable(true);
         setTitle("Buscar estudiante");
@@ -69,6 +71,28 @@ public class StudentSearch extends javax.swing.JInternalFrame {
             }
         });
 
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Matrícula", "Nombre", "Apellido", "Carrera"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.setFillsViewportHeight(true);
+        jScrollPane2.setViewportView(table);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,6 +111,10 @@ public class StudentSearch extends javax.swing.JInternalFrame {
                         .addGap(24, 24, 24)
                         .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)))
                 .addGap(76, 76, 76))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,23 +127,28 @@ public class StudentSearch extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVerUno)
                     .addComponent(btnVerTodos))
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVerUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUnoActionPerformed
+        ls.clear();
         try {
             String id = txtId.getText();            
             PojoStudent e = dao.readSingle(id);
-            System.out.println(
-                    "\nMatrícula: " + e.getEnrollment()+
-                            "\nNombre: "  + e.getName()+
-                            "\nApellido: "  + e.getLastName()+
-                            "\nCarrera: "   + e.getCareer()+
-                            "\n"
-            );
+            ls.add(e);
+//            System.out.println(
+//                    "\nMatrícula: " + e.getEnrollment()+
+//                            "\nNombre: "  + e.getName()+
+//                            "\nApellido: "  + e.getLastName()+
+//                            "\nCarrera: "   + e.getCareer()+
+//                            "\n"
+//            );
+            showTable(ls);
         } catch (SQLException ex) {
             Logger.getLogger(StudentSearch.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -126,29 +159,46 @@ public class StudentSearch extends javax.swing.JInternalFrame {
         ls.clear();
         
         try {
-            ls = dao.readAll();
-            
-            ls.forEach((student) -> {
-                System.out.println(
-                    "\nMatrícula: " + student.getEnrollment()+
-                    "\nNombre: "  + student.getName()+
-                    "\nApellido: "  + student.getLastName()+
-                    "\nCarrera: "   + student.getCareer()+
-                    "\n"
-                );
-                
-            }); 
-            
+            ls = dao.readAll();            
+//            ls.forEach((student) -> {
+//                System.out.println(
+//                    "\nMatrícula: " + student.getEnrollment()+
+//                    "\nNombre: "  + student.getName()+
+//                    "\nApellido: "  + student.getLastName()+
+//                    "\nCarrera: "   + student.getCareer()+
+//                    "\n"
+//                );
+//                
+//            }); 
+            showTable(ls);            
         } catch (SQLException ex) {
             Logger.getLogger(StudentSearch.class.getName()).log(Level.SEVERE, null, ex);
         }     
     }//GEN-LAST:event_btnVerTodosActionPerformed
 
-
+    private void showTable(List<PojoStudent> ls){
+        Object matrix [][] = new Object[ls.size()][4];
+        
+        for (int i = 0; i < ls.size(); i++) {
+            matrix [i][0] = ls.get(i).getEnrollment();
+            matrix [i][1] = ls.get(i).getName();
+            matrix [i][2] = ls.get(i).getLastName();
+            matrix [i][3] = ls.get(i).getCareer();
+        }
+        
+         table.setModel(new javax.swing.table.DefaultTableModel(
+            matrix,
+            new String [] {
+                "ID", "Nombre", "Apellido", "Carrera"
+            }
+        ));
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVerTodos;
     private javax.swing.JButton btnVerUno;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable table;
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }

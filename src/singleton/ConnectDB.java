@@ -14,7 +14,7 @@ public class ConnectDB {
     
      private static ConnectDB connectionInstance = null;
     private Connection connectionDB = null;     
-    private final String URL = "jdbc:postgresql://localhost:5432/inyec_depen";
+    private final String URL = "jdbc:postgresql://localhost:5432/uv";
     private final String USER = "postgres";
     private final String PASSWORD = "yamaha112";
     
