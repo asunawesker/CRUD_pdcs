@@ -20,6 +20,7 @@ public class PrincipalView extends javax.swing.JFrame {
      */
     public PrincipalView() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -57,7 +58,9 @@ public class PrincipalView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(612, 450));
 
-        jDesktopPane1.setPreferredSize(new java.awt.Dimension(700, 500));
+        jDesktopPane1.setToolTipText("");
+        jDesktopPane1.setMaximumSize(new java.awt.Dimension(700, 500));
+        jDesktopPane1.setMinimumSize(new java.awt.Dimension(700, 500));
         jDesktopPane1.setVerifyInputWhenFocusTarget(false);
         getContentPane().add(jDesktopPane1, java.awt.BorderLayout.CENTER);
 
