@@ -13,4 +13,6 @@ Patrones usados:
 - Singleton
 - Dao (Interface, Concrete Class y Model Object)
 - Factory
+- Inyección de dependencias
+- Inversión de control
 - GUI con Swing
